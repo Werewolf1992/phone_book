@@ -1,23 +1,37 @@
 {% extends 'base.html' %}
 
 {% block content %}
-     <table class="table">
-         <thead>
-            <th>Name</th>
-            <th>Last name</th>
-            <th>Actions</th>
-         </thead>
-         <tbody>
-            {% for person in contacts %}
-                <tr>
-                    <td>{{ person.name }}</td>
-                    <td>{{ person.last_name }}</td>
-                    <td>
-                        <a class="btn btn-primary" href="{% url 'edit' person.id %}">EDIT</a>
-                        <a class="btn btn-danger" href="{% url 'delete' person.id %}">DELETE</a>
-                    </td>
-                </tr>
-            {% endfor %}
-         </tbody>
-     </table>
+    <table class="table">
+        <thead>
+        <th>Name</th>
+        <th>Last name</th>
+        <th>Phone number</th>
+        <th>Workplace</th>
+        <th>Company</th>
+        <th>Email</th>
+        <th></th>
+        </thead>
+        <tbody>
+        {% for person in contacts %}
+            <tr>
+                <td>{{ person.name }}</td>
+                <td>{{ person.last_name }}</td>
+                <td>{{ person.phone_number }}</td>
+                <td>{{ person.work_place }}</td>
+                <td>{{ person.company }}</td>
+                <td>{{ person.e_mail }}</td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="...">
+                        <a class="btn btn-primary" href="{% url 'edit' person.id %}">
+                            <span class="glyphicon glyphicon-pencil"></span> EDIT
+                        </a>
+                        <a class="btn btn-danger" href="{% url 'delete' person.id %}">
+                            <span class="glyphicon glyphicon-remove"></span> DELETE
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock content %}

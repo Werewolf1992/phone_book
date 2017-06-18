@@ -1,9 +1,9 @@
 from django.conf.urls import url
-from .views import list_view, add_view, edit_view, person_delete
+from .views import PersonListView, PersonCreateView, PersonUpdateView, PersonDeleteView
 
 urlpatterns = [
-    url(r'^$', list_view, name='list'),
-    url(r'^add/$', add_view, name='add'),
-    url(r'^edit/([0-9])/$', edit_view, name='edit'),
-    url(r'^delete/([0-9])/$', person_delete, name='delete')
+    url(r'^$', PersonListView.as_view(), name='list'),
+    url(r'^add/$', PersonCreateView.as_view(), name='add'),
+    url(r'^edit/(?P<pk>[0-9]+)/$', PersonUpdateView.as_view(), name='edit'),
+    url(r'^delete/(?P<pk>[0-9]+)/$', PersonDeleteView.as_view(), name='delete')
 ]

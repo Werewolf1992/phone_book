@@ -1,6 +1,8 @@
 import logging
 
-from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic.edit import DeleteView, CreateView, UpdateView
+from django.views.generic import ListView
+from django.urls import reverse_lazy
 
 from apps.core.forms import PersonForm
 from apps.core.models import Person
@@ -8,38 +10,26 @@ from apps.core.models import Person
 log = logging.getLogger(__name__)
 
 
-def list_view(request):
-    contacts = Person.objects.all().order_by('name')
-    log.info('List  view visited')
-    return render(request, 'list.html', {'contacts': contacts})
+class PersonListView(ListView):
+    model = Person
+    template_name = 'list.html'
 
 
-def add_view(request):
-    log.info('Add view visited')
-    if request.method == "POST":
-        form = PersonForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('list')
-    else:
-        form = PersonForm()
-    return render(request, 'add.html', {'form': form})
+class PersonCreateView(CreateView):
+    model = Person
+    form_class = PersonForm
+    template_name = 'form.html'
+    success_url = reverse_lazy('list')
 
 
-def edit_view(request, person_id):
-    log.info('Edit view visited')
-    person = get_object_or_404(Person, id=person_id)
-    if request.method == "POST":
-        form = PersonForm(request.POST, instance=person)
-        if form.is_valid():
-            form.save()
-            return redirect('list')
-    else:
-        form = PersonForm(instance=person)
-    return render(request, 'edit.html', {'form': form})
+class PersonUpdateView(UpdateView):
+    model = Person
+    form_class = PersonForm
+    template_name = 'form.html'
+    success_url = reverse_lazy('list')
 
 
-def person_delete(request, person_id):
-        query = Person.objects.get(id=person_id)
-        query.delete()
-        return redirect('list')
+class PersonDeleteView(DeleteView):
+    model = Person
+    success_url = reverse_lazy('list')
+    template_name = 'confirm_delete.html'
